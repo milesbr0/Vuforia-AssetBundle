@@ -19,6 +19,68 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 {
     #region PROTECTED_MEMBER_VARIABLES
 
+    public GameObject scanImage;
+    private bool isGoingUp = true;
+    private Camera cam;
+    private bool isEnabled = true;
+
+    // Update is called once per frame
+
+    private void Awake()
+    {
+        if (!scanImage)
+            scanImage = GameObject.Find("ScanLine");
+    }
+    void Update()
+    {
+        if (isEnabled)
+        {
+            int step = cam.pixelHeight / 200;
+            if (isGoingUp)
+            {
+                up(step);
+                if (scanImage.transform.position.y >= cam.pixelHeight - 1)
+                {
+                    isGoingUp = false;
+                }
+            }
+            else
+            {
+                down(step);
+                if (scanImage.transform.position.y <= 1)
+                {
+                    isGoingUp = true;
+                }
+            }
+        }
+    }
+
+    private void up(int step)
+    {
+        Vector3 position = scanImage.transform.position;
+        position.y += step;
+        scanImage.transform.position = position;
+    }
+
+    private void down(int step)
+    {
+        Vector3 position = scanImage.transform.position;
+        position.y -= step;
+        scanImage.transform.position = position;
+    }
+
+    public void enable()
+    {
+        isEnabled = true;
+        scanImage.SetActive(true);
+    }
+
+    public void disable()
+    {
+        isEnabled = false;
+        scanImage.SetActive(false);
+    }
+
     protected TrackableBehaviour mTrackableBehaviour;
     protected TrackableBehaviour.Status m_PreviousStatus;
     protected TrackableBehaviour.Status m_NewStatus;
@@ -29,6 +91,9 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     protected virtual void Start()
     {
+        // Camera should named to MainCamera
+        cam = Camera.main;
+
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
@@ -83,6 +148,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     protected virtual void OnTrackingFound()
     {
+        disable();
         var rendererComponents = GetComponentsInChildren<Renderer>(true);
         var colliderComponents = GetComponentsInChildren<Collider>(true);
         var canvasComponents = GetComponentsInChildren<Canvas>(true);
@@ -103,6 +169,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     protected virtual void OnTrackingLost()
     {
+        enable();
         var rendererComponents = GetComponentsInChildren<Renderer>(true);
         var colliderComponents = GetComponentsInChildren<Collider>(true);
         var canvasComponents = GetComponentsInChildren<Canvas>(true);

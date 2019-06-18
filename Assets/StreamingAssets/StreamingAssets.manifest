@@ -1,0 +1,13 @@
+ManifestFileVersion: 0
+CRC: 2085056599
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: jelenetvalaszto
+      Dependencies: {}
+    Info_1:
+      Name: lemez2
+      Dependencies: {}
+    Info_2:
+      Name: szabja2
+      Dependencies: {}

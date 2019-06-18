@@ -12,39 +12,31 @@ using System.Collections;
 public class TapHandler : MonoBehaviour
 {
     private Touch inittouch = new Touch();
-    public Camera cam;
-    [SerializeField] private float rotSpeed = 0.5f, dir = -1;
-    private float rotX = 0f, rotY = 0;
+    public GameObject model;
+    [SerializeField] private float rotSpeed = 0.5f;
+    private float rotX = 0f;
     private Vector3 originRot;
 
-    private void Start()
-    {
-        originRot = cam.transform.eulerAngles;
+    private void Start(){
+        originRot = model.transform.eulerAngles;
         rotX = originRot.x;
-        rotY = originRot.y;
     }
 
-    void Update()
-    {
+    void Update(){
         // On Android, the Back button is mapped to the Esc key
         if (Application.platform == RuntimePlatform.Android)
         {
-            if (Input.GetKeyUp(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
+            if (Input.GetKeyUp(KeyCode.Escape)) Application.Quit();
 
-            foreach (Touch touch in Input.touches)
-            {
+            foreach (Touch touch in Input.touches){
+
                 if (touch.phase == TouchPhase.Began) inittouch = touch;
-                else if (touch.phase == TouchPhase.Moved)
-                {
+
+                else if (touch.phase == TouchPhase.Moved){
                     float deltaX = inittouch.position.x - touch.position.x;
-                    float deltaY = inittouch.position.y - touch.position.y;
-                    rotX -= deltaX * Time.deltaTime * rotSpeed * dir;
-                    rotY -= deltaY * Time.deltaTime * rotSpeed * dir;
-                    rotX =Mathf.Clamp(rotX, -80f, 80f);
-                    cam.transform.eulerAngles = new Vector3(rotX, rotY, 0f);          
+                    rotX -= deltaX * rotSpeed;
+                    Vector3 RotateAxis = Vector3.forward;
+                    model.transform.rotation = Quaternion.AngleAxis(rotX, RotateAxis);
                 }
                 else if (touch.phase == TouchPhase.Ended) inittouch = new Touch();
             }
@@ -54,6 +46,7 @@ public class TapHandler : MonoBehaviour
 
     public void BackButton()
     {
+        Debug.Log("I've been pressed!");
        	Application.Quit();
     }
 

@@ -4,13 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Vuforia;
 
-public class ScanLine : MonoBehaviour {
+public class ScanLine : MonoBehaviour{
 
     public GameObject scanImage;
     private bool isGoingUp = true;
     private Camera cam;
-
-
     private bool isEnabled = true;
 
     // Use this for initialization

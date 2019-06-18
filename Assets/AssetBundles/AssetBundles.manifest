@@ -1,0 +1,13 @@
+ManifestFileVersion: 0
+CRC: 144594705
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: streamedscenes
+      Dependencies: {}
+    Info_1:
+      Name: streamedscenes1
+      Dependencies: {}
+    Info_2:
+      Name: jelenetvalaszto
+      Dependencies: {}
